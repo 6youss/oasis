@@ -1,0 +1,20 @@
+{
+  "name": "oasis",
+  "version": "1.0.0",
+  "description": "booking system api",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.15",
+    "@types/pg": "^8.6.6",
+    "express": "^4.18.2",
+    "kafka-node": "^5.0.0",
+    "pg": "^8.8.0",
+    "typescript": "^4.9.4"
+  }
+}
