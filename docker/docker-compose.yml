@@ -1,0 +1,13 @@
+version: "3.1"
+
+services:
+  postgres:
+    image: postgres
+    env_file:
+      - .env
+    volumes:
+      - $PGDATA_VOLUME_PATH:/var/lib/postgresql/data
+      - ../database:/docker-entrypoint-initdb.d
+    restart: always
+    ports:
+      - $PG_PORT:$PG_PORT

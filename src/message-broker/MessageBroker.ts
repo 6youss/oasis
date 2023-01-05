@@ -1,28 +1,18 @@
+import { IMessageBroker, SubscriberCb } from "./IMessageBroker";
 import { KafkaImplementation } from "./KafkaImplementation";
-import { RxJSImplementation } from "./RxJSImplementation";
 
-class MessageBroker {
-  constructor() {
-    this.implementation = null;
-  }
+class MessageBroker implements IMessageBroker {
+  constructor(private implementation: IMessageBroker) {}
 
-  setImplementation(implementation) {
-    this.implementation = implementation;
-  }
-
-  send(topic, message) {
+  send(topic: string, message: string) {
     this.implementation.send(topic, message);
   }
 
-  subscribe(topic, callback) {
+  subscribe(topic: string, callback: SubscriberCb) {
     this.implementation.subscribe(topic, callback);
   }
 }
 
-export const messageBroker = new MessageBroker();
+const kafkaImplementation = new KafkaImplementation();
 
-// Use Kafka as the messaging technology
-messageBroker.setImplementation(new KafkaImplementation());
-
-// Use RxJS as the messaging technology
-messageBroker.setImplementation(new RxJSImplementation());
+export const messageBroker = new MessageBroker(kafkaImplementation);

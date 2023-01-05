@@ -1,22 +1,24 @@
-const { KafkaClient, Producer, Consumer } = require("kafka-node");
+import { IMessageBroker } from "./IMessageBroker";
 
-export class KafkaImplementation {
-  constructor() {
-    this.client = new KafkaClient();
-    this.producer = new Producer(this.client);
-    this.consumer = new Consumer(this.client, [], { autoCommit: true });
-  }
+import { KafkaClient, Producer, Consumer } from "kafka-node";
 
-  send(topic, message) {
+export class KafkaImplementation implements IMessageBroker {
+  client = new KafkaClient();
+  producer = new Producer(this.client);
+  consumer = new Consumer(this.client, [], { autoCommit: true });
+
+  constructor() {}
+
+  send(topic: string, message: string) {
     this.producer.send([{ topic, messages: message }], (error, result) => {
       console.log(error || result);
     });
   }
 
-  subscribe(topic, callback) {
-    this.consumer.addTopics([topic]);
+  subscribe(topic: string, callback: (message: string) => void) {
+    this.consumer.addTopics([topic], () => {});
     this.consumer.on("message", (message) => {
-      callback(message.value);
+      callback(message.value.toString());
     });
   }
 }

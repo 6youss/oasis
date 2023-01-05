@@ -1,17 +1,8 @@
 import express from "express";
-import { Pool } from "pg";
+import { pool } from "./db-postgres";
 
 const app = express();
 const port = 3000;
-
-// Create a new PostgreSQL connection pool
-const pool = new Pool({
-  user: "myuser",
-  host: "localhost",
-  database: "mydatabase",
-  password: "mypassword",
-  port: 5432,
-});
 
 app.get("/reservations", async (req, res) => {
   try {
