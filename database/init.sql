@@ -1,3 +1,5 @@
+BEGIN;
+
 CREATE TABLE resources (
   id SERIAL PRIMARY KEY,
   name VARCHAR NOT NULL,
@@ -27,3 +29,5 @@ CREATE TABLE availability (
   end_time TIMESTAMP NOT NULL,
   resource_id INTEGER NOT NULL REFERENCES resources(id)
 );
+
+COMMIT;

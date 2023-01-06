@@ -1,6 +1,6 @@
 import { IMessageBroker, SubscriberCb } from "./IMessageBroker";
 
-export class RxJSImplementation implements IMessageBroker {
+export class CbImplementation implements IMessageBroker {
   subscribers = new Map<string, Set<(message: string) => void>>();
 
   constructor() {}

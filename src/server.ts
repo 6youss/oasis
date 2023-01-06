@@ -1,8 +1,9 @@
 import express from "express";
-import { pool } from "./db-postgres";
+import { pool } from "./db";
+import { messageBroker } from "./message-broker/MessageBroker";
+import { wsApp } from "./ws";
 
 const app = express();
-const port = 3000;
 
 app.get("/reservations", async (req, res) => {
   try {
@@ -11,6 +12,7 @@ app.get("/reservations", async (req, res) => {
     const reservations = result.rows;
     client.release();
     res.json(reservations);
+    messageBroker.send("get-reservations", "test");
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
@@ -74,6 +76,16 @@ app.post("/reservations", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+pool.connect();
+
+const httpPort = 3000;
+app.listen(httpPort, () => {
+  console.log(`Server listening at http://localhost:${httpPort}`);
+});
+
+const wsPort = 9001;
+wsApp.listen(wsPort, (listenSocket) => {
+  if (listenSocket) {
+    console.log(`Websocket server listening to port ${wsPort}`);
+  }
 });

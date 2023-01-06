@@ -1,5 +1,6 @@
+import { SOCKETS } from "../ws";
+import { CbImplementation } from "./CbImplementation";
 import { IMessageBroker, SubscriberCb } from "./IMessageBroker";
-import { KafkaImplementation } from "./KafkaImplementation";
 
 class MessageBroker implements IMessageBroker {
   constructor(private implementation: IMessageBroker) {}
@@ -13,6 +14,12 @@ class MessageBroker implements IMessageBroker {
   }
 }
 
-const kafkaImplementation = new KafkaImplementation();
+const cbImplementation = new CbImplementation();
 
-export const messageBroker = new MessageBroker(kafkaImplementation);
+export const messageBroker = new MessageBroker(cbImplementation);
+
+messageBroker.subscribe("get-reservations", (message) => {
+  SOCKETS.forEach((socket) => {
+    socket.send(message, false, true);
+  });
+});
