@@ -1,6 +1,6 @@
 import uws, { WebSocket } from "uWebSockets.js";
 
-export const SOCKETS = new Set<WebSocket>();
+export const OPEN_SOCKETS = new Set<WebSocket>();
 
 export const wsApp = uws.App().ws("/*", {
   /* There are many common helper features */
@@ -17,9 +17,9 @@ export const wsApp = uws.App().ws("/*", {
     let ok = ws.send(message, isBinary, true);
   },
   open: (ws) => {
-    SOCKETS.add(ws);
+    OPEN_SOCKETS.add(ws);
   },
   close: (ws) => {
-    SOCKETS.delete(ws);
+    OPEN_SOCKETS.delete(ws);
   },
 });
