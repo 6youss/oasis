@@ -12,7 +12,6 @@ export const wsApp = uws.App().ws("/*", {
   /* For brevity we skip the other events (upgrade, open, ping, pong, close) */
   message: (ws, message, isBinary) => {
     /* You can do app.publish('sensors/home/temperature', '22C') kind of pub/sub as well */
-
     /* Here we echo the message back, using compression if available */
     let ok = ws.send(message, isBinary, true);
   },

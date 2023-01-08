@@ -1,14 +1,10 @@
 import express from "express";
-import { pool } from "./infrastructure/db";
-import { MbCbImplementation } from "./infrastructure/message-broker/CbImplementation";
-import { MessageBroker } from "./infrastructure/message-broker/MessageBroker";
+import { MbCbImplementation } from "./infrastructure/message-broker/cb.port";
+import { MessageBroker } from "./infrastructure/message-broker/message-broker.adapter";
 import { wsApp } from "./infrastructure/ws";
 import { ReservationsController } from "./reservations/reservations.controller";
 import { ReservationsRepository } from "./reservations/reservations.repository";
 import { ReservationsService } from "./reservations/reservations.service";
-import { ResourcesController } from "./resources/resources.controller";
-import { ResourcesRepository } from "./resources/resources.repository";
-import { ResourcesService } from "./resources/resources.service";
 
 const app = express();
 
@@ -21,15 +17,6 @@ reservationsService.subscribeToNewReservations();
 const reservationsController = new ReservationsController(reservationsService);
 
 app.use("/reservations", reservationsController.router);
-
-const resourcesRepository = new ResourcesRepository();
-const resourcesService = new ResourcesService(resourcesRepository);
-const resourcesController = new ResourcesController(resourcesService);
-
-app.use("/resources", resourcesController.router);
-
-// start db server
-pool.connect();
 
 // start http server
 const httpPort = 3000;

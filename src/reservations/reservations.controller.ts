@@ -1,30 +1,18 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { ControllerFn } from "../infrastructure/express.adapter";
+import { HttpContext } from "../infrastructure/http-context";
 import { ReservationsService } from "./reservations.service";
 
 export class ReservationsController {
   constructor(private reservationsService: ReservationsService) {}
 
-  get router() {
-    const router = Router();
-    router.get("/", this.getAll);
-    router.post("/", this.createReservation);
-    return router;
-  }
-
-  getAll = async (_: Request, res: Response, __: NextFunction) => {
+  getAll: ControllerFn = async () => {
     const reservations = await this.reservationsService.getAll();
-    res.json(reservations);
+    return reservations;
   };
 
-  createReservation = async (req: Request, res: Response, __: NextFunction) => {
-    const { startTime, endTime, rate, resourceId, customerId } = req.body;
-    const reservation = await this.reservationsService.createReservation(
-      startTime,
-      endTime,
-      rate,
-      resourceId,
-      customerId
-    );
-    res.json(reservation);
+  createReservation = async (httpContext: HttpContext) => {
+    const { startTime, endTime, resourceId, customerId } = httpContext.body;
+    const reservation = await this.reservationsService.createReservation(startTime, endTime, resourceId, customerId);
+    return reservation;
   };
 }

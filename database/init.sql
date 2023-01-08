@@ -18,7 +18,6 @@ CREATE TABLE reservations (
   id SERIAL PRIMARY KEY,
   start_time TIMESTAMP NOT NULL,
   end_time TIMESTAMP NOT NULL,
-  rate NUMERIC NOT NULL,
   resource_id INTEGER NOT NULL REFERENCES resources(id),
   customer_id INTEGER NOT NULL REFERENCES customers(id)
 );

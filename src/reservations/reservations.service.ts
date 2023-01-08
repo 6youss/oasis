@@ -1,4 +1,4 @@
-import { MessageBroker } from "../infrastructure/message-broker/MessageBroker";
+import { MessageBroker } from "../infrastructure/message-broker/message-broker.adapter";
 import { OPEN_SOCKETS } from "../infrastructure/ws";
 import { ReservationsRepository } from "./reservations.repository";
 
@@ -17,7 +17,7 @@ export class ReservationsService {
     return this.reservationsRepo.getAll();
   }
 
-  async createReservation(startTime: string, endTime: string, rate: string, resourceId: string, customerId: string) {
+  async createReservation(startTime: string, endTime: string, resourceId: string, customerId: string) {
     const isResourceAvailabale = await this.isResourceAvailable(resourceId, startTime, endTime);
 
     if (!isResourceAvailabale) {
@@ -27,7 +27,6 @@ export class ReservationsService {
     const createdReservation = await this.reservationsRepo.insertReservation(
       startTime,
       endTime,
-      rate,
       resourceId,
       customerId
     );
