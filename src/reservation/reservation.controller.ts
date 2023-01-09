@@ -1,11 +1,10 @@
-import { ControllerFn } from "../infrastructure/express.adapter";
-import { HttpContext } from "../infrastructure/http-context";
-import { ReservationsService } from "./reservations.service";
+import { HttpContext } from "../infrastructure/http/http.adapter";
+import { ReservationService } from "./reservation.service";
 
-export class ReservationsController {
-  constructor(private reservationsService: ReservationsService) {}
+export class ReservationController {
+  constructor(private reservationsService: ReservationService) {}
 
-  getAll: ControllerFn = async () => {
+  getAll = async () => {
     const reservations = await this.reservationsService.getAll();
     return reservations;
   };

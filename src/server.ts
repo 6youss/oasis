@@ -1,22 +1,31 @@
 import express from "express";
+import { PostgresAdapter } from "./infrastructure/db/postgres.adapter";
+import { makeExpressAdapter } from "./infrastructure/http/express.port";
 import { MbCbImplementation } from "./infrastructure/message-broker/cb.port";
 import { MessageBroker } from "./infrastructure/message-broker/message-broker.adapter";
 import { wsApp } from "./infrastructure/ws";
-import { ReservationsController } from "./reservations/reservations.controller";
-import { ReservationsRepository } from "./reservations/reservations.repository";
-import { ReservationsService } from "./reservations/reservations.service";
+import { ReservationController } from "./reservation/reservation.controller";
+import { ReservationRepository } from "./reservation/reservation.repository";
+import { ReservationService } from "./reservation/reservation.service";
 
 const app = express();
 
-const mbImplementation = new MbCbImplementation();
-const messageBroker = new MessageBroker(mbImplementation);
+const mbCbImplementation = new MbCbImplementation();
+const messageBroker = new MessageBroker(mbCbImplementation);
 
-const reservationsRepository = new ReservationsRepository();
-const reservationsService = new ReservationsService(reservationsRepository, messageBroker);
+const postgresAdapter = new PostgresAdapter();
+postgresAdapter.init();
+
+const reservationsRepository = new ReservationRepository(postgresAdapter);
+const reservationsService = new ReservationService(reservationsRepository, messageBroker);
 reservationsService.subscribeToNewReservations();
-const reservationsController = new ReservationsController(reservationsService);
+const reservationsController = new ReservationController(reservationsService);
 
-app.use("/reservations", reservationsController.router);
+const reservationsRouter = express.Router();
+reservationsRouter.get("/", makeExpressAdapter(reservationsController.getAll));
+reservationsRouter.post("/", makeExpressAdapter(reservationsController.createReservation));
+
+app.use("/reservations", reservationsRouter);
 
 // start http server
 const httpPort = 3000;
