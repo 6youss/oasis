@@ -1,12 +1,11 @@
 import express from "express";
 import { PostgresAdapter } from "./infrastructure/db/postgres.adapter";
-import { makeExpressAdapter } from "./infrastructure/http/express.port";
 import { MbCbImplementation } from "./infrastructure/message-broker/cb.port";
 import { MessageBroker } from "./infrastructure/message-broker/message-broker.adapter";
 import { wsApp } from "./infrastructure/ws";
-import { ReservationController } from "./reservation/reservation.controller";
-import { ReservationRepository } from "./reservation/reservation.repository";
-import { ReservationService } from "./reservation/reservation.service";
+import { getReservationRoutes } from "./reservation/reservation.routes";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 
 const app = express();
 
@@ -16,16 +15,22 @@ const messageBroker = new MessageBroker(mbCbImplementation);
 const postgresAdapter = new PostgresAdapter();
 postgresAdapter.init();
 
-const reservationsRepository = new ReservationRepository(postgresAdapter);
-const reservationsService = new ReservationService(reservationsRepository, messageBroker);
-reservationsService.subscribeToNewReservations();
-const reservationsController = new ReservationController(reservationsService);
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Oasis API",
+      version: "1.0.0",
+    },
+    basePath: "alors",
+  },
+  apis: ["./**/*.routes.ts"], // files containing annotations as above
+};
 
-const reservationsRouter = express.Router();
-reservationsRouter.get("/", makeExpressAdapter(reservationsController.getAll));
-reservationsRouter.post("/", makeExpressAdapter(reservationsController.createReservation));
+const openapiSpecification = swaggerJsdoc(options);
 
-app.use("/reservations", reservationsRouter);
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+app.use("/api/reservations", getReservationRoutes(postgresAdapter, messageBroker));
 
 // start http server
 const httpPort = 3000;
