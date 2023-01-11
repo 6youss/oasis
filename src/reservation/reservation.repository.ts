@@ -11,7 +11,13 @@ export interface ReservationModel {
   customer_id: number;
 }
 
-export class ReservationRepository {
+export interface ReservationRepository {
+  getAll: () => Promise<ReservationModel[]>;
+  getReservationsRange: (resourceId: string, startTime: string, endTime: string) => Promise<ReservationModel[]>;
+  insertReservation: (startTime: string, endTime: string, resourceId: string, customerId: string) =>  Promise<ReservationModel>;
+}
+
+export class ReservationPostgresRepository implements ReservationRepository {
   constructor(private db: PostgresAdapter) {}
 
   async getAll() {
@@ -35,3 +41,5 @@ export class ReservationRepository {
     return reservation;
   }
 }
+
+

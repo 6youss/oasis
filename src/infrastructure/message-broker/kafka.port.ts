@@ -1,7 +1,7 @@
 import { KafkaClient, Producer, Consumer } from "kafka-node";
-import { IMessageBroker } from "./message-broker.adapter";
+import { MessageBroker } from "./message-broker.adapter";
 
-export class MbKafkaImplementation implements IMessageBroker {
+export class MbKafkaImplementation implements MessageBroker {
   client: KafkaClient | undefined;
   producer: Producer | undefined;
   consumer: Consumer | undefined;

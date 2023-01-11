@@ -1,6 +1,6 @@
-import { IMessageBroker, SubscriberCb } from "./message-broker.adapter";
+import { MessageBroker, SubscriberCb } from "./message-broker.adapter";
 
-export class MbCbImplementation implements IMessageBroker {
+export class MbCbImplementation implements MessageBroker {
   subscribers = new Map<string, Set<(message: string) => void>>();
 
   constructor() {}

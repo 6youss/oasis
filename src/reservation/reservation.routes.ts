@@ -3,11 +3,11 @@ import { PostgresAdapter } from "../infrastructure/db/postgres.adapter";
 import { makeExpressAdapter } from "../infrastructure/http/express.port";
 import { MessageBroker } from "../infrastructure/message-broker/message-broker.adapter";
 import { ReservationController } from "./reservation.controller";
-import { ReservationRepository } from "./reservation.repository";
+import { ReservationPostgresRepository } from "./reservation.repository";
 import { ReservationService } from "./reservation.service";
 
 export function getReservationRoutes(pg: PostgresAdapter, mb: MessageBroker) {
-  const reservationsRepository = new ReservationRepository(pg);
+  const reservationsRepository = new ReservationPostgresRepository(pg);
   const reservationsService = new ReservationService(reservationsRepository, mb);
   reservationsService.subscribeToNewReservations();
   const reservationsController = new ReservationController(reservationsService);

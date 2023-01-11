@@ -1,16 +1,13 @@
 import express from "express";
 import { PostgresAdapter } from "./infrastructure/db/postgres.adapter";
 import { MbCbImplementation } from "./infrastructure/message-broker/cb.port";
-import { MessageBroker } from "./infrastructure/message-broker/message-broker.adapter";
 import { wsApp } from "./infrastructure/ws";
 import { getReservationRoutes } from "./reservation/reservation.routes";
 import { swaggerRoute } from "./swagger-route";
 
 const app = express();
 
-const mbCbImplementation = new MbCbImplementation();
-const messageBroker = new MessageBroker(mbCbImplementation);
-
+const messageBroker =  new MbCbImplementation();
 const postgresAdapter = new PostgresAdapter();
 postgresAdapter.init();
 
