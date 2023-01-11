@@ -24,7 +24,7 @@ export class HttpContext {
     return this.expressRes;
   }
 
-  createRESTEnvelop(returnResult: unknown) {
+  createRESTEnvelope(returnResult: unknown) {
     let envelop = {
       success: true,
       statusCode: 200,
@@ -40,7 +40,7 @@ export class HttpContext {
     return envelop;
   }
 
-  createRESTErrorEnvelop(error: unknown) {
+  createRESTErrorEnvelope(error: unknown) {
     let errEnvelop = {
       success: false,
       statusCode: 500,

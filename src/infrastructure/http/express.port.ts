@@ -7,11 +7,11 @@ export const makeExpressAdapter = (controller: ControllerFn) => async (req: Requ
     const controllerReturn = await controller(httpContext);
     res.set("Content-Type", "application/json");
     res.type("json");
-    const envolop = httpContext.createRESTEnvelop(controllerReturn);
+    const envolop = httpContext.createRESTEnvelope(controllerReturn);
     res.status(envolop.statusCode).send(envolop);
   } catch (e) {
     console.error(e);
-    const errEnvelop = httpContext.createRESTErrorEnvelop(e);
+    const errEnvelop = httpContext.createRESTErrorEnvelope(e);
     res.status(errEnvelop.statusCode).json(errEnvelop);
   }
 };
