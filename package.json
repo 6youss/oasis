@@ -2,6 +2,9 @@
   "name": "oasis",
   "version": "1.0.0",
   "description": "booking system api",
+  "engines": {
+    "node": ">=18.13.0"
+  },
   "scripts": {
     "tsc": "tsc",
     "dev": "tsc && concurrently \"tsc --watch\" \"nodemon dist/server.js\""
@@ -14,8 +17,7 @@
     "pg": "^8.8.0",
     "swagger-jsdoc": "^6.2.7",
     "swagger-ui-express": "^4.6.0",
-    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.15.0",
-    "ws": "^8.11.0"
+    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.15.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.15",
