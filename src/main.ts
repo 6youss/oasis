@@ -1,23 +1,23 @@
-import express from "express";
 import { PostgresAdapter } from "./infrastructure/db/postgres.adapter";
+import { ExpressServer } from "./infrastructure/http/express.port";
 import { MbCbImplementation } from "./infrastructure/message-broker/cb.port";
 import { wsApp } from "./infrastructure/ws";
-import { getReservationRoutes } from "./reservation/reservation.routes";
-import { swaggerRoute } from "./swagger-route";
+import { registerReservationRoutes } from "./reservation/reservation.routes";
 
-const app = express();
+const server = new ExpressServer();
 
-const messageBroker =  new MbCbImplementation();
+const messageBroker = new MbCbImplementation();
 const postgresAdapter = new PostgresAdapter();
+
 postgresAdapter.init();
 
-app.use("/api/docs", swaggerRoute);
+registerReservationRoutes(server, postgresAdapter, messageBroker);
 
-app.use("/api/reservations", getReservationRoutes(postgresAdapter, messageBroker));
+server.registerSwaggerRoute({ path: "/" });
 
 // start http server
 const httpPort = 3000;
-app.listen(httpPort, () => {
+server.start(httpPort).then(() => {
   console.log(`Server listening at http://localhost:${httpPort}`);
 });
 

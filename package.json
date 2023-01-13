@@ -7,7 +7,7 @@
   },
   "scripts": {
     "tsc": "tsc",
-    "dev": "tsc && concurrently \"tsc --watch\" \"nodemon dist/server.js\""
+    "dev": "tsc && concurrently \"tsc --watch\" \"nodemon dist/main.js\""
   },
   "author": "",
   "license": "ISC",

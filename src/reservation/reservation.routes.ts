@@ -1,17 +1,15 @@
-import { Router } from "express";
 import { PostgresAdapter } from "../infrastructure/db/postgres.adapter";
-import { makeExpressAdapter } from "../infrastructure/http/express.port";
+import { HttpServer } from "../infrastructure/http/http.adapter";
 import { MessageBroker } from "../infrastructure/message-broker/message-broker.adapter";
 import { ReservationController } from "./reservation.controller";
 import { ReservationPostgresRepository } from "./reservation.repository";
 import { ReservationService } from "./reservation.service";
 
-export function getReservationRoutes(pg: PostgresAdapter, mb: MessageBroker) {
+export function registerReservationRoutes(server: HttpServer, pg: PostgresAdapter, mb: MessageBroker) {
   const reservationsRepository = new ReservationPostgresRepository(pg);
   const reservationsService = new ReservationService(reservationsRepository, mb);
   reservationsService.subscribeToNewReservations();
   const reservationsController = new ReservationController(reservationsService);
-  const router = Router();
 
   /**
    * @openapi
@@ -22,7 +20,12 @@ export function getReservationRoutes(pg: PostgresAdapter, mb: MessageBroker) {
    *       200:
    *         description: returns all the made reservations
    */
-  router.get("/", makeExpressAdapter(reservationsController.getAll));
+  server.registerRoute({
+    path: "reservations",
+    method: "get",
+    controller: reservationsController.getAll,
+    private: true,
+  });
 
   /**
    * @openapi
@@ -37,7 +40,11 @@ export function getReservationRoutes(pg: PostgresAdapter, mb: MessageBroker) {
    *             schema:
    *                 $ref: '#/components/schemas/Reservation'
    */
-  router.post("/", makeExpressAdapter(reservationsController.createReservation));
+  server.registerRoute({
+    path: "reservations",
+    method: "post",
+    controller: reservationsController.createReservation,
+  });
 
   /**
    * @openapi
@@ -55,5 +62,4 @@ export function getReservationRoutes(pg: PostgresAdapter, mb: MessageBroker) {
    *           description: The user's name.
    *           example: Leanne Graham
    */
-  return router;
 }

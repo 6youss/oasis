@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
 import { HttpError } from "./http-errors";
 
-export type ControllerReturnType = { statusCode: number; data: any };
+export class ControllerResult {
+  constructor(public statusCode: number, public data: any) {}
+}
 
-export type ControllerFn = (httpReq: HttpContext) => Promise<any>;
+export type ControllerFn = (httpCtx: HttpContext) => Promise<any>;
 
 export class HttpContext {
   constructor(
@@ -12,25 +13,16 @@ export class HttpContext {
     public params: Record<string, string>,
     public ip: string,
     public method: string,
-    public path: string,
-    private expressReq: Request,
-    private expressRes: Response
+    public path: string
   ) {}
 
-  getExpressReq(): Request {
-    return this.expressReq;
-  }
-  getExpressRes(): Response {
-    return this.expressRes;
-  }
-
-  createRESTEnvelope(returnResult: unknown) {
+  createRESTSuccessEnvelope(returnResult: unknown) {
     let envelop = {
       success: true,
       statusCode: 200,
       data: returnResult,
     };
-    if (isControllerReturnType(returnResult)) {
+    if (returnResult instanceof ControllerResult) {
       envelop = {
         success: true,
         statusCode: returnResult.statusCode,
@@ -61,9 +53,18 @@ export class HttpContext {
   }
 }
 
-function isControllerReturnType(o: unknown): o is ControllerReturnType {
-  if (o && typeof o === "object" && "type" in o && "data" in o) {
-    return true;
-  }
-  return false;
+export interface Route {
+  method: "get" | "post" | "delete" | "put";
+  path: string;
+  private?: boolean;
+  controller: ControllerFn;
+}
+
+export interface SwaggerOpts {
+  path: string;
+}
+export interface HttpServer {
+  start: (port: number) => Promise<void>;
+  registerRoute: (route: Route) => void;
+  registerSwaggerRoute: (opts: SwaggerOpts) => void;
 }

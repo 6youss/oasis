@@ -1,4 +1,4 @@
-import { HttpContext } from "../infrastructure/http/http.adapter";
+import { ControllerResult, HttpContext } from "../infrastructure/http/http.adapter";
 import { ReservationService } from "./reservation.service";
 
 export class ReservationController {
@@ -12,6 +12,6 @@ export class ReservationController {
   createReservation = async (httpContext: HttpContext) => {
     const { startTime, endTime, resourceId, customerId } = httpContext.body;
     const reservation = await this.reservationsService.createReservation(startTime, endTime, resourceId, customerId);
-    return { statusCode: 201, data: reservation };
+    return new ControllerResult(201, reservation);
   };
 }
