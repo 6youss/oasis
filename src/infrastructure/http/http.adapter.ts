@@ -66,5 +66,4 @@ export interface SwaggerOpts {
 export interface HttpServer {
   start: (port: number) => Promise<void>;
   registerRoute: (route: Route) => void;
-  registerSwaggerRoute: (opts: SwaggerOpts) => void;
 }

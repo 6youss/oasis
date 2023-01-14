@@ -13,8 +13,6 @@ postgresAdapter.init();
 
 registerReservationRoutes(server, postgresAdapter, messageBroker);
 
-server.registerSwaggerRoute({ path: "/" });
-
 // start http server
 const httpPort = 3000;
 server.start(httpPort).then(() => {
