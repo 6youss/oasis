@@ -1,0 +1,62 @@
+{
+	"info": {
+		"_postman_id": "cf53a9dd-456f-433a-863a-7d60a6067e84",
+		"name": "oasis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "7262772-cf53a9dd-456f-433a-863a-7d60a6067e84"
+	},
+	"item": [
+		{
+			"name": "getReservations",
+			"id": "d69eeef1-3aa4-47fb-9fff-a7c0a1dc71f6",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/reservations",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"reservations"
+					]
+				},
+				"description": "gets all reservations"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "a3c00a28-0ff5-4b47-b91d-cdbb1edf9297",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "8d577033-0fbf-4979-822a-9ebf4a72c14e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "8e564b76-f873-4ee5-ac65-6ddeb17c1900",
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}

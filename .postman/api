@@ -5,6 +5,7 @@ id = 8d07d3a4-bd47-4213-b947-2c78515fd678
 
 [relations.collections]
 rootDirectory = postman/collections
+files[] = {"id":"7262772-cf53a9dd-456f-433a-863a-7d60a6067e84","path":"oasis.json","metaData":{}}
 
 [relations.collections.metaData]
 
@@ -14,3 +15,4 @@ files[] = {"path":"index.json","metaData":{}}
 
 [relations.apiDefinition.metaData]
 type = openapi:3_1
+rootFiles[] = index.json
