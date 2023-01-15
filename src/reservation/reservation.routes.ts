@@ -21,7 +21,7 @@ export function registerReservationRoutes(server: HttpServer, pg: PostgresAdapte
    *         description: returns all the made reservations
    */
   server.registerRoute({
-    path: "reservations",
+    path: "/reservations",
     method: "get",
     controller: reservationsController.getAll,
     private: true,
@@ -41,7 +41,7 @@ export function registerReservationRoutes(server: HttpServer, pg: PostgresAdapte
    *                 $ref: '#/components/schemas/Reservation'
    */
   server.registerRoute({
-    path: "reservations",
+    path: "/reservations",
     method: "post",
     controller: reservationsController.createReservation,
   });
