@@ -4,6 +4,7 @@ import { ControllerFn, HttpContext, HttpServer, Route, SwaggerOpts } from "./htt
 import { Router as SwaggerRouter } from "express";
 
 export const makeExpressAdapter = (controller: ControllerFn) => async (req: Request, res: Response) => {
+  console.log("got here");
   const httpContext = new HttpContext(req.body, req.query, req.params, req.ip, req.method, req.path);
   try {
     const controllerResult = await controller(httpContext);
