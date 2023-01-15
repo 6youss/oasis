@@ -5,6 +5,7 @@ export class Console implements Logger {
 
   private static NEXT_ID: number = 0;
   constructor() {
+    console.log("got here logger");
     this.logId = this.createLogId();
   }
 
@@ -24,6 +25,7 @@ export class Console implements Logger {
       date: new Date(),
       data: log,
     };
+    console.log(logResult);
     return logResult;
   }
 }
