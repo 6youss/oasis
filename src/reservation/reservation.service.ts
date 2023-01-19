@@ -1,10 +1,16 @@
 import { ConflictError } from "../infrastructure/http/http-errors";
+import { Console } from "../infrastructure/logger/console.port";
+import { Logger } from "../infrastructure/logger/logger.adapter";
 import { MessageBroker } from "../infrastructure/message-broker/message-broker.adapter";
 import { OPEN_SOCKETS } from "../infrastructure/ws";
 import { ReservationRepository } from "./reservation.repository";
 
 export class ReservationService {
-  constructor(private reservationsRepo: ReservationRepository, private messageBroker: MessageBroker) {}
+  constructor(
+    private reservationsRepo: ReservationRepository,
+    private messageBroker: MessageBroker,
+    private logger: Logger
+  ) {}
 
   subscribeToNewReservations() {
     this.messageBroker.subscribe("create-reservation", (message) => {
@@ -15,6 +21,11 @@ export class ReservationService {
   }
 
   async getAll() {
+    this.logger.log({
+      severity: "DEBUG",
+      body: "Get all reservations",
+      description: "",
+    });
     return this.reservationsRepo.getAll();
   }
 

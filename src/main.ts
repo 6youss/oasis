@@ -1,5 +1,6 @@
 import { PostgresAdapter } from "./infrastructure/db/postgres.adapter";
 import { ExpressServer } from "./infrastructure/http/express.port";
+import { Console } from "./infrastructure/logger/console.port";
 import { MbCbImplementation } from "./infrastructure/message-broker/cb.port";
 import { wsApp } from "./infrastructure/ws";
 import { registerReservationRoutes } from "./reservation/reservation.routes";
@@ -8,10 +9,10 @@ const server = new ExpressServer();
 
 const messageBroker = new MbCbImplementation();
 const postgresAdapter = new PostgresAdapter();
-
+const logger = new Console();
 postgresAdapter.init();
 
-registerReservationRoutes(server, postgresAdapter, messageBroker);
+registerReservationRoutes(server, postgresAdapter, messageBroker, logger);
 
 // start http server
 const httpPort = 3000;
