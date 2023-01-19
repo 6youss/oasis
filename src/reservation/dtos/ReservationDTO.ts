@@ -1,3 +1,3 @@
-import { components } from "../../generated/api-types";
+import { components } from "../../generated/openapi-types";
 
 export type ReservationDTO = components["schemas"]["Reservation"];
