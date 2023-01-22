@@ -1,11 +1,10 @@
-import { LogDTO, LogCb, Logger, LogResult } from "./logger.adapter";
+import { Logger, LogResult, LogAdditionalData } from "./logger.adapter";
 
 export class Console implements Logger {
   private logId: string;
 
   private static NEXT_ID: number = 0;
   constructor() {
-    console.log("got here logger");
     this.logId = this.createLogId();
   }
 
@@ -19,13 +18,60 @@ export class Console implements Logger {
     return logId.toString();
   }
 
-  log(log: LogDTO) {
-    const logResult: LogResult = {
-      id: this.logId,
-      date: new Date(),
-      data: log,
+  debug(description: string, additionalData?: LogAdditionalData) {
+    const logResult: LogResult & { logLevel: "DEBUG" } = {
+      metadata: {
+        id: this.logId,
+        date: new Date(),
+      },
+      description,
+      additionalData,
+      logLevel: "DEBUG",
     };
-    console.log(logResult);
+    console.debug(logResult, additionalData);
+    return logResult;
+  }
+
+  info(description: string, additionalData?: LogAdditionalData) {
+    const logResult: LogResult & { logLevel: "INFO" } = {
+      metadata: {
+        id: this.logId,
+        date: new Date(),
+      },
+      description,
+      additionalData,
+      logLevel: "INFO",
+    };
+    console.info(logResult, additionalData);
+    return logResult;
+  }
+
+  warn(description: string, additionalData?: LogAdditionalData) {
+    const logResult: LogResult & { logLevel: "WARNING" } = {
+      metadata: {
+        id: this.logId,
+        date: new Date(),
+      },
+      description,
+      additionalData,
+      logLevel: "WARNING",
+    };
+    console.warn(logResult, additionalData);
+    return logResult;
+  }
+
+  error(description: string, error: Error, additionalData?: LogAdditionalData) {
+    const logResult: LogResult & { logLevel: "ERROR"; error: Error } = {
+      metadata: {
+        id: this.logId,
+        date: new Date(),
+      },
+      description,
+      additionalData,
+      logLevel: "ERROR",
+      error,
+    };
+    console.error(logResult, error, additionalData);
     return logResult;
   }
 }
