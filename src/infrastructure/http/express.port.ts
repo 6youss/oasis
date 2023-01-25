@@ -1,10 +1,7 @@
-import { Request, Response } from "express";
-import express from "express";
-import { ControllerFn, HttpContext, HttpServer, Route, SwaggerOpts } from "./http.adapter";
-import { Router as SwaggerRouter } from "express";
+import express, { Request, Response } from "express";
+import { ControllerFn, HttpContext, HttpServer, Route } from "./http.adapter";
 
 export const makeExpressAdapter = (controller: ControllerFn) => async (req: Request, res: Response) => {
-  console.log("got here");
   const httpContext = new HttpContext(req.body, req.query, req.params, req.ip, req.method, req.path);
   try {
     const controllerResult = await controller(httpContext);

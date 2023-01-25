@@ -1,5 +1,4 @@
 import { ConflictError } from "../infrastructure/http/http-errors";
-import { Console } from "../infrastructure/logger/console.port";
 import { Logger } from "../infrastructure/logger/logger.adapter";
 import { MessageBroker } from "../infrastructure/message-broker/message-broker.adapter";
 import { OPEN_SOCKETS } from "../infrastructure/ws";
@@ -21,11 +20,7 @@ export class ReservationService {
   }
 
   async getAll() {
-    this.logger.log({
-      severity: "DEBUG",
-      body: "Get all reservations",
-      description: "",
-    });
+    this.logger.info("getting all the reservations");
     return this.reservationsRepo.getAll();
   }
 
