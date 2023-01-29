@@ -6,10 +6,9 @@ import { wsApp } from "./infrastructure/ws";
 import { registerReservationRoutes } from "./reservation/reservation.routes";
 
 const server = new ExpressServer();
-
-const messageBroker = new MbCbImplementation();
-const postgresAdapter = new PostgresAdapter();
 const logger = new Console();
+const messageBroker = new MbCbImplementation();
+const postgresAdapter = new PostgresAdapter(logger);
 postgresAdapter.init();
 
 registerReservationRoutes(server, postgresAdapter, messageBroker, logger);
@@ -17,13 +16,13 @@ registerReservationRoutes(server, postgresAdapter, messageBroker, logger);
 // start http server
 const httpPort = 3000;
 server.start(httpPort).then(() => {
-  console.log(`Server listening at http://localhost:${httpPort}`);
+  logger.info(`Server listening at http://localhost:${httpPort}`);
 });
 
 // start websocket server
 const wsPort = 9001;
 wsApp.listen(wsPort, (listenSocket) => {
   if (listenSocket) {
-    console.log(`Websocket server listening to port ${wsPort}`);
+    logger.info(`Websocket server listening to port ${wsPort}`);
   }
 });

@@ -1,0 +1,46 @@
+openapi: 3.0.3
+info:
+  title: Oasis API
+  version: 1.0.0
+paths:
+  /api/reservations:
+    get:
+      summary: Get all reservations
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reservation'
+components:
+  schemas:
+    Reservation:
+      type: object
+      required:
+        - id
+        - start_time
+        - end_time
+        - resource_id
+        - customer_id
+      properties:
+        id:
+          type: integer
+        start_time:
+          type: integer
+        end_time:
+          type: integer
+        resource_id:
+          type: integer
+        customer_id:
+          type: integer
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          description: A human readable error message
+          type: string
+
+

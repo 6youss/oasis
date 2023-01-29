@@ -1,9 +1,10 @@
 import { Pool } from "pg";
+import { Logger } from "../logger/logger.adapter";
 
 export class PostgresAdapter {
   private pool: Pool | undefined;
 
-  constructor() {}
+  constructor(private logger: Logger) {}
 
   async init() {
     this.pool = new Pool({
@@ -20,9 +21,10 @@ export class PostgresAdapter {
       throw new Error("db not initilized, please call init() before");
     }
     const client = await this.pool.connect();
-    console.time(q);
+    const startTime = new Date().getTime();
     const result = await client.query(q, params);
-    console.timeEnd(q);
+    const endTime = new Date().getTime();
+    this.logger.info(`${q} ;${endTime - startTime}ms`);
     client.release();
     return result.rows as T[];
   }

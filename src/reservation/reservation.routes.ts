@@ -16,7 +16,6 @@ export function registerReservationRoutes(server: HttpServer, pg: PostgresAdapte
     path: "/reservations",
     method: "get",
     controller: reservationsController.getAll,
-    private: true,
   });
 
   server.registerRoute({
