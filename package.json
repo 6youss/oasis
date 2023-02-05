@@ -8,9 +8,8 @@
   "scripts": {
     "tsc": "tsc",
     "dev": "tsc && concurrently \"tsc --watch\" \"nodemon dist/main.js\"",
-    "generate-api-types": "openapi-typescript postman/schemas/index.yaml --output src/generated/openapi-types.ts",
     "openapi-generator-cli": "openapi-generator-cli",
-    "gen": "openapi-generator-cli generate -i postman/schemas/index.yaml -g typescript-fetch -o src/generated/openapi"
+    "generate-api-types": "sh ./generate-api-types.sh"
   },
   "author": "",
   "license": "ISC",
@@ -23,15 +22,12 @@
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.5.2",
     "@types/express": "^4.17.15",
-    "@types/kafka-node": "^3.0.0",
     "@types/pg": "^8.6.6",
     "@types/swagger-jsdoc": "^6.0.1",
     "@types/swagger-ui-express": "^4.1.3",
     "@types/uws": "^0.13.3",
-    "@types/ws": "^8.5.4",
     "concurrently": "^7.6.0",
     "nodemon": "^2.0.20",
-    "openapi-typescript": "^6.1.0",
     "typescript": "^4.9.4"
   }
 }
