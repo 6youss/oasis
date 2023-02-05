@@ -12,9 +12,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Reservation'
+                allOf:
+                  - $ref: '#/components/schemas/List'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Reservation'
 components:
   schemas:
+    List:
+      type: object
+      properties:
+        page_number:
+            type: integer
+        page_count:
+            type: integer
     Reservation:
       type: object
       required:
