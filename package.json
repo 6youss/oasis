@@ -8,7 +8,7 @@
   "scripts": {
     "tsc": "tsc",
     "dev": "tsc && concurrently \"tsc --watch\" \"nodemon dist/main.js\"",
-    "generate-api-types": "openapi-typescript postman/schemas/index.json --output src/generated/openapi-types.ts"
+    "generate-api-types": "openapi-typescript postman/schemas/index.yaml --output src/generated/openapi-types.ts"
   },
   "author": "",
   "license": "ISC",

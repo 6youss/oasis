@@ -60,9 +60,6 @@ export interface Route {
   controller: ControllerFn;
 }
 
-export interface SwaggerOpts {
-  path: string;
-}
 export interface HttpServer {
   start: (port: number) => Promise<void>;
   registerRoute: (route: Route) => void;

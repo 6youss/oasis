@@ -4,15 +4,37 @@
  */
 
 
-export type paths = Record<string, never>;
+export interface paths {
+  "/api/reservations": {
+    /** Get all reservations */
+    get: {
+      /** Get all reservations */
+      responses: {
+        /** @description Success */
+        200: {
+          content: {
+            "application/json": components["schemas"]["Reservation"];
+          };
+        };
+      };
+    };
+  };
+}
 
 export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
     Reservation: {
-      /** Format: int64 */
       id: number;
+      start_time: number;
+      end_time: number;
+      resource_id: number;
+      customer_id: number;
+    };
+    Error: {
+      /** @description A human readable error message */
+      message: string;
     };
   };
   responses: never;
