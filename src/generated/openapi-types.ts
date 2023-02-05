@@ -7,17 +7,7 @@
 export interface paths {
   "/api/reservations": {
     /** Get all reservations */
-    get: {
-      /** Get all reservations */
-      responses: {
-        /** @description Success */
-        200: {
-          content: {
-            "application/json": components["schemas"]["Reservation"];
-          };
-        };
-      };
-    };
+    get: operations["getAllOperations"];
   };
 }
 
@@ -25,6 +15,10 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    List: {
+      page_number?: number;
+      page_count?: number;
+    };
     Reservation: {
       id: number;
       start_time: number;
@@ -46,4 +40,19 @@ export interface components {
 
 export type external = Record<string, never>;
 
-export type operations = Record<string, never>;
+export interface operations {
+
+  getAllOperations: {
+    /** Get all reservations */
+    responses: {
+      /** @description Success */
+      200: {
+        content: {
+          "application/json": components["schemas"]["List"] & {
+            data?: (components["schemas"]["Reservation"])[];
+          };
+        };
+      };
+    };
+  };
+}
