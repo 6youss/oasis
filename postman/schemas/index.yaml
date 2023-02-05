@@ -13,23 +13,18 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/List'
-                  - type: object
-                    properties:
-                      data:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/Reservation'
+                type: object
+                properties:
+                  success:
+                      type: boolean
+                  statusCode:
+                      type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Reservation'
 components:
   schemas:
-    List:
-      type: object
-      properties:
-        page_number:
-            type: integer
-        page_count:
-            type: integer
     Reservation:
       type: object
       required:
@@ -49,7 +44,7 @@ components:
           type: integer
         customer_id:
           type: integer
-    Error:
+    ApiError:
       type: object
       required:
         - message
