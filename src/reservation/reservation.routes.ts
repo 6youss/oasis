@@ -13,13 +13,13 @@ export function registerReservationRoutes(server: HttpServer, pg: PostgresAdapte
   const reservationsController = new ReservationController(reservationsService);
 
   server.registerRoute({
-    path: "/reservations",
+    path: "/api/reservations",
     method: "get",
     controller: reservationsController.getAll,
   });
 
   server.registerRoute({
-    path: "/reservations",
+    path: "/api/reservations",
     method: "post",
     controller: reservationsController.createReservation,
   });

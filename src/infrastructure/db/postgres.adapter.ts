@@ -24,7 +24,7 @@ export class PostgresAdapter {
     const startTime = new Date().getTime();
     const result = await client.query(q, params);
     const endTime = new Date().getTime();
-    this.logger.info(`${q} ;${endTime - startTime}ms`);
+    this.logger.log(`${q}; ${endTime - startTime}ms`);
     client.release();
     return result.rows as T[];
   }

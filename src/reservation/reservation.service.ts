@@ -20,7 +20,7 @@ export class ReservationService {
   }
 
   async getAll() {
-    this.logger.info("getting all the reservations");
+    this.logger.log("getting all the reservations");
     return this.reservationsRepo.getAll();
   }
 
