@@ -11,8 +11,8 @@ files[] = {"id":"7262772-cf53a9dd-456f-433a-863a-7d60a6067e84","path":"oasis.jso
 
 [relations.apiDefinition]
 rootDirectory = postman/schemas
-files[] = {"path":"index.json","metaData":{}}
+files[] = {"path":"index.yaml","metaData":{}}
 
 [relations.apiDefinition.metaData]
-type = openapi:3_1
-rootFiles[] = index.json
+type = openapi:3
+rootFiles[] = index.yaml
