@@ -5,6 +5,7 @@ info:
 paths:
   /api/reservations:
     get:
+      operationId: getAllOperations
       summary: Get all reservations
       responses:
         200:
