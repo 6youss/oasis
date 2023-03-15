@@ -3,7 +3,7 @@ info:
   title: Oasis API
   version: 1.0.0
 paths:
-  /api/reservations:
+  /reservations:
     get:
       summary: Get all reservations
       responses:
