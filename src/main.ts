@@ -1,5 +1,6 @@
+import { Auth0Adapter } from "./infrastructure/auth/auth0.adapter";
 import { PostgresAdapter } from "./infrastructure/db/postgres.adapter";
-import { ExpressServer } from "./infrastructure/http/express.port";
+import { ExpressServer } from "./infrastructure/http/express.adapter";
 import { ConsoleLogger } from "./infrastructure/logger/console.port";
 import { MbCbImplementation } from "./infrastructure/message-broker/cb.port";
 import { wsApp } from "./infrastructure/ws";
@@ -8,7 +9,15 @@ import { ReservationPostgresRepository } from "./reservation/reservation.reposit
 import { ReservationService } from "./reservation/reservation.service";
 
 const logger = new ConsoleLogger();
-const server = new ExpressServer(logger);
+
+const oauth = new Auth0Adapter({
+  issuer: "https://dev-7ocdn8vhuo20ldrv.us.auth0.com/",
+  authorization_endpoint: "https://dev-7ocdn8vhuo20ldrv.us.auth0.com/authorize",
+  token_endpoint: "https://dev-7ocdn8vhuo20ldrv.us.auth0.com/oauth/token",
+  jwks_uri: "https://dev-7ocdn8vhuo20ldrv.us.auth0.com/.well-known/jwks.json",
+});
+
+const server = new ExpressServer(logger, oauth);
 const messageBroker = new MbCbImplementation();
 const postgresAdapter = new PostgresAdapter(logger);
 
@@ -18,13 +27,14 @@ reservationsService.subscribeToNewReservations();
 const reservationsController = new ReservationController(reservationsService);
 
 server.registerRoute({
-  path: "/api/reservations",
+  path: "/reservations",
   method: "get",
+  private: true,
   controller: reservationsController.getAll,
 });
 
 server.registerRoute({
-  path: "/api/reservations",
+  path: "/reservations",
   method: "post",
   controller: reservationsController.createReservation,
 });

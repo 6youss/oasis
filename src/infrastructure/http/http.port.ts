@@ -1,5 +1,16 @@
 import { HttpError } from "./http-errors";
 
+export interface HttpServer {
+  start: (port: number) => Promise<void>;
+  registerRoute: (route: Route) => void;
+}
+
+export interface Route {
+  method: "get" | "post" | "delete" | "put";
+  path: string;
+  private?: boolean;
+  controller: ControllerFn;
+}
 export class ControllerResult {
   constructor(public statusCode: number, public data: any) {}
 }
@@ -51,16 +62,4 @@ export class HttpContext {
     }
     return errEnvelop;
   }
-}
-
-export interface Route {
-  method: "get" | "post" | "delete" | "put";
-  path: string;
-  private?: boolean;
-  controller: ControllerFn;
-}
-
-export interface HttpServer {
-  start: (port: number) => Promise<void>;
-  registerRoute: (route: Route) => void;
 }

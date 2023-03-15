@@ -1,11 +1,13 @@
 import express, { Request, Response } from "express";
+import { OAuthPort } from "../auth/auth.port";
 import { Logger } from "../logger/logger.adapter";
-import { ControllerFn, HttpContext, HttpServer, Route } from "./http.adapter";
+import { UnauthorizedError } from "./http-errors";
+import { HttpContext, HttpServer, Route } from "./http.port";
 
 export class ExpressServer implements HttpServer {
   app = express();
 
-  constructor(private logger: Logger) {}
+  constructor(private logger: Logger, private oauth: OAuthPort) {}
 
   start(port: number) {
     return new Promise<void>((resolve) => {
@@ -16,13 +18,17 @@ export class ExpressServer implements HttpServer {
   }
 
   registerRoute = (route: Route) => {
-    this.app[route.method](route.path, this.createExpressAdapter(route.controller));
+    this.app[route.method](route.path, this.createExpressAdapter(route));
   };
 
-  createExpressAdapter = (controller: ControllerFn) => async (req: Request, res: Response) => {
+  createExpressAdapter = (route: Route) => async (req: Request, res: Response) => {
     const httpContext = new HttpContext(req.body, req.query, req.params, req.ip, req.method, req.path);
+
     try {
-      const controllerResult = await controller(httpContext);
+      if (route.private) {
+        await this.validateJwt(req);
+      }
+      const controllerResult = await route.controller(httpContext);
       res.set("Content-Type", "application/json");
       res.type("json");
       const envolop = httpContext.createRESTSuccessEnvelope(controllerResult);
@@ -33,4 +39,16 @@ export class ExpressServer implements HttpServer {
       res.status(errEnvelop.statusCode).json(errEnvelop);
     }
   };
+
+  async validateJwt(req: Request) {
+    const authHeader = req.headers.authorization;
+    const token = authHeader?.split(" ")[1];
+    if (!token) {
+      throw new UnauthorizedError();
+    }
+    const isTokenValid = await this.oauth.verifyToken(token);
+    if (!isTokenValid) {
+      throw new UnauthorizedError();
+    }
+  }
 }

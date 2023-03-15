@@ -1,4 +1,4 @@
-import { ControllerResult, HttpContext } from "../infrastructure/http/http.adapter";
+import { ControllerResult, HttpContext } from "../infrastructure/http/http.port";
 import { ReservationService } from "./reservation.service";
 
 export class ReservationController {
