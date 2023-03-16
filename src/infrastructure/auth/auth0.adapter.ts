@@ -3,10 +3,8 @@ import jwksClient from "jwks-rsa";
 import jwt, { GetPublicKeyOrSecret } from "jsonwebtoken";
 
 export interface Auth0Config {
-  issuer: string;
-  authorization_endpoint: string;
-  token_endpoint: string;
-  jwks_uri: string;
+  issuerBaseURL: string;
+  audience: string;
 }
 
 export class Auth0Adapter implements OAuthPort {
@@ -14,7 +12,7 @@ export class Auth0Adapter implements OAuthPort {
 
   verifyToken(token: string) {
     return new Promise<boolean>((resolve) => {
-      const validationOptions = { audience: this.config.issuer, issuer: this.config.issuer };
+      const validationOptions = { audience: this.config.audience, issuer: this.config.issuerBaseURL };
       jwt.verify(token, this.getKey, validationOptions, (err) => {
         if (err) {
           resolve(false);
@@ -26,8 +24,9 @@ export class Auth0Adapter implements OAuthPort {
   }
 
   getKey: GetPublicKeyOrSecret = (header, callback) => {
+    const jwksUri = new URL("/.well-known/jwks.json", this.config.issuerBaseURL).toString();
     const client = jwksClient({
-      jwksUri: this.config.jwks_uri,
+      jwksUri,
     });
     client.getSigningKey(header.kid, function (err, key) {
       const signingKey = key?.getPublicKey();

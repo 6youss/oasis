@@ -11,10 +11,8 @@ import { ReservationService } from "./reservation/reservation.service";
 const logger = new ConsoleLogger();
 
 const oauth = new Auth0Adapter({
-  issuer: "https://dev-7ocdn8vhuo20ldrv.us.auth0.com/",
-  authorization_endpoint: "https://dev-7ocdn8vhuo20ldrv.us.auth0.com/authorize",
-  token_endpoint: "https://dev-7ocdn8vhuo20ldrv.us.auth0.com/oauth/token",
-  jwks_uri: "https://dev-7ocdn8vhuo20ldrv.us.auth0.com/.well-known/jwks.json",
+  issuerBaseURL: "https://dev-m3qbhz01kkxn1lxy.us.auth0.com/",
+  audience: "https://oasis.sixyouss.com",
 });
 
 const server = new ExpressServer(logger, oauth);
