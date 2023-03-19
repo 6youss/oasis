@@ -1,6 +1,6 @@
 import { OAuthPort } from "./auth.port";
 import jwksClient from "jwks-rsa";
-import jwt, { GetPublicKeyOrSecret } from "jsonwebtoken";
+import jwt, { GetPublicKeyOrSecret, VerifyOptions } from "jsonwebtoken";
 
 export interface Auth0Config {
   issuerBaseURL: string;
@@ -12,7 +12,7 @@ export class Auth0Adapter implements OAuthPort {
 
   verifyToken(token: string) {
     return new Promise<boolean>((resolve) => {
-      const validationOptions = { audience: this.config.audience, issuer: this.config.issuerBaseURL };
+      const validationOptions: VerifyOptions = { audience: this.config.audience, issuer: this.config.issuerBaseURL };
       jwt.verify(token, this.getKey, validationOptions, (err) => {
         if (err) {
           resolve(false);

@@ -1,6 +1,7 @@
 openapi: 3.0.3
 info:
   title: Oasis API
+  description: A booking system
   version: 1.0.0
 paths:
   /reservations:
@@ -34,7 +35,7 @@ components:
           type: integer
         customer_id:
           type: integer
-    Error:
+    ApiError:
       type: object
       required:
         - message

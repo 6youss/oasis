@@ -21,12 +21,11 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUrl}}/api/reservations",
+					"raw": "{{baseUrl}}/reservations",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"api",
 						"reservations"
 					]
 				}
@@ -64,11 +63,61 @@
 			]
 		}
 	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "authUrl",
+				"value": "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "https://login.microsoftonline.com/organizations/oauth2/v2.0/token",
+				"type": "string"
+			},
+			{
+				"key": "scope",
+				"value": "openid api://e03df932-db9b-418f-abd6-7fcea584cd14/Test",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "97bdb9c4-0eaf-4a03-8914-6e41518827d6",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "azad_token",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "body",
+				"type": "string"
+			},
+			{
+				"key": "useBrowser",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "grant_type",
+				"value": "authorization_code_with_pkce",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "e273a50e-266d-4c06-bbfb-a0f7dfc9e590",
+				"id": "a1e73b1d-e470-4bb2-8117-62bf39c41e0e",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -78,7 +127,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "4859bf59-10bb-4f7e-9f5e-46c07c5c58e7",
+				"id": "09847724-3a96-457a-aadf-b47e7b53ccd7",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -88,9 +137,9 @@
 	],
 	"variable": [
 		{
-			"id": "7a35ac71-8ce1-4f48-afe1-51130fd0534a",
+			"id": "e609f8ae-b9d4-420a-a10d-1850732fe0ca",
 			"key": "baseUrl",
-			"value": "localhost:3000",
+			"value": "http://localhost:3000",
 			"type": "string"
 		}
 	]

@@ -1,8 +1,9 @@
 import { Auth0Adapter } from "./infrastructure/auth/auth0.adapter";
+import { AzureADAdapter } from "./infrastructure/auth/azure-ad.adapter";
 import { PostgresAdapter } from "./infrastructure/db/postgres.adapter";
 import { ExpressServer } from "./infrastructure/http/express.adapter";
 import { ConsoleLogger } from "./infrastructure/logger/console.port";
-import { MbCbImplementation } from "./infrastructure/message-broker/cb.port";
+import { MbCbAdapter } from "./infrastructure/message-broker/cb.adapter";
 import { wsApp } from "./infrastructure/ws";
 import { ReservationController } from "./reservation/reservation.controller";
 import { ReservationPostgresRepository } from "./reservation/reservation.repository";
@@ -10,13 +11,18 @@ import { ReservationService } from "./reservation/reservation.service";
 
 const logger = new ConsoleLogger();
 
-const oauth = new Auth0Adapter({
-  issuerBaseURL: "https://dev-m3qbhz01kkxn1lxy.us.auth0.com/",
-  audience: "https://oasis.sixyouss.com",
+// const auth0 = new Auth0Adapter({
+//   issuerBaseURL: "https://dev-m3qbhz01kkxn1lxy.us.auth0.com/",
+//   audience: "https://oasis.sixyouss.com",
+// });
+const azad = new AzureADAdapter({
+  issuer: `https://login.microsoftonline.com//v2.0`,
+  audience: ``,
+  jwksUri: `https://login.microsoftonline.com/organizations/discovery/v2.0/keys`,
 });
 
-const server = new ExpressServer(logger, oauth);
-const messageBroker = new MbCbImplementation();
+const server = new ExpressServer(logger, azad);
+const messageBroker = new MbCbAdapter();
 const postgresAdapter = new PostgresAdapter(logger);
 
 const reservationsRepository = new ReservationPostgresRepository(postgresAdapter);
