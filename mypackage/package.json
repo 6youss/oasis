@@ -1,6 +1,7 @@
 {
   "name": "@6youss/mypackage",
   "version": "1.0.0",
+  "repository": "https://github.com/6youss/oasis.git",
   "description": "a package to test github packages",
   "main": "index.js",
   "scripts": {
