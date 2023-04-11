@@ -1,5 +1,5 @@
 {
-  "name": "@6youss/mypackage",
+  "name": "mypackage",
   "version": "1.0.0",
   "description": "a package to test github packages",
   "main": "index.js",
@@ -12,6 +12,6 @@
     "node": ">=18"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@6youss"
+    "registry": "https://npm.pkg.github.com"
   }
 }
