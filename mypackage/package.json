@@ -1,5 +1,5 @@
 {
-  "name": "mypackage",
+  "name": "@6youss/mypackage",
   "version": "1.0.0",
   "description": "a package to test github packages",
   "main": "index.js",
