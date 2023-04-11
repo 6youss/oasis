@@ -14,7 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
-
+        with:
+          node-version: 18
+          registry-url: https://npm.pkg.github.com
+          scope: "@6youss"
       - run: npm ci
       - run: npm publish
         env:
