@@ -2,34 +2,20 @@ name: Generate OAS types
 
 on:
   push:
-    branches: "**"
+    paths:
+      - "postman/schemas/*.yaml"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
-        with:
-          token: ${{secrets.MY_GITHUB_TOKEN}}
-          fetch-depth: 0
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v35
-        with:
-          files: postman/schemas/*.yaml
-      - name: Run generation steps if open api spec has been updated
-        if: steps.changed-files.outputs.any_changed == 'true'
+      - uses: actions/setup-node@v3
+      - name: Run generation
         run: |
           npm i @openapitools/openapi-generator-cli@2.5.2 --no-save 
           npm run generate-openapi-types
       - name: Commit generated files
-        if: steps.changed-files.outputs.any_changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "generate OAS types"
