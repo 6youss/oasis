@@ -1,5 +1,4 @@
-import { Auth0Adapter } from "./infrastructure/auth/auth0.adapter";
-import { AzureADAdapter } from "./infrastructure/auth/azure-ad.adapter";
+import { KeycloakAdapter } from "./infrastructure/auth/keycloak.adapter";
 import { PostgresAdapter } from "./infrastructure/db/postgres.adapter";
 import { ExpressServer } from "./infrastructure/http/express.adapter";
 import { ConsoleLogger } from "./infrastructure/logger/console.port";
@@ -11,17 +10,13 @@ import { ReservationService } from "./reservation/reservation.service";
 
 const logger = new ConsoleLogger();
 
-// const auth0 = new Auth0Adapter({
-//   issuerBaseURL: "https://dev-m3qbhz01kkxn1lxy.us.auth0.com/",
-//   audience: "https://oasis.sixyouss.com",
-// });
-const azad = new AzureADAdapter({
-  issuer: `https://login.microsoftonline.com//v2.0`,
-  audience: ``,
-  jwksUri: `https://login.microsoftonline.com/organizations/discovery/v2.0/keys`,
+const keycloakOauth = new KeycloakAdapter({
+  issuer: `http://localhost:8080/realms/Tricksept`,
+  audience: `oasis-api`,
+  jwksUri: `http://localhost:8080/realms/Tricksept/protocol/openid-connect/certs`,
 });
 
-const server = new ExpressServer(logger, azad);
+const server = new ExpressServer(logger, keycloakOauth);
 const messageBroker = new MbCbAdapter();
 const postgresAdapter = new PostgresAdapter(logger);
 

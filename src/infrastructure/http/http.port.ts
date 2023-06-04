@@ -8,6 +8,9 @@ export interface HttpServer {
 export interface Route {
   method: "get" | "post" | "delete" | "put";
   path: string;
+  /**
+   * true by default
+   */
   private?: boolean;
   controller: ControllerFn;
 }

@@ -23,9 +23,8 @@ export class ExpressServer implements HttpServer {
 
   createExpressAdapter = (route: Route) => async (req: Request, res: Response) => {
     const httpContext = new HttpContext(req.body, req.query, req.params, req.ip, req.method, req.path);
-
     try {
-      if (route.private) {
+      if (route.private ?? true) {
         await this.validateJwt(req);
       }
       const controllerResult = await route.controller(httpContext);
