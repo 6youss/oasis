@@ -1,13 +1,28 @@
 version: "3.1"
 
 services:
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    command: start-dev
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_USERNAME=postgres
+      - KC_DB_PASSWORD=postgres
+      - KC_DB_URL=jdbc:postgresql://postgres/keycloak
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
   postgres:
     image: postgres
-    env_file:
-      - .env
     volumes:
-      - $PGDATA_VOLUME_PATH:/var/lib/postgresql/data
+      - ./pg-data:/var/lib/postgresql/data
       - ../database:/docker-entrypoint-initdb.d
     restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     ports:
-      - $PG_PORT:$PG_PORT
+      - 5432:5432

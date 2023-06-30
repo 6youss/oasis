@@ -7,7 +7,7 @@
   },
   "scripts": {
     "tsc": "tsc",
-    "dev": "tsc && concurrently \"tsc --watch\" \"nodemon --inspect dist/main.js\"",
+    "dev": "tsc && concurrently \"tsc --watch\" \"node --inspect --watch dist/main.js\"",
     "generate-openapi-types": "OUTPUT_PATH=src/openapi-types sh ./scripts/generate_openapi_types.sh"
   },
   "author": "",

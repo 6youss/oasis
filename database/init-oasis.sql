@@ -1,5 +1,6 @@
+CREATE database oasis;
+\c oasis;
 BEGIN;
-
 CREATE TABLE resources (
   id SERIAL PRIMARY KEY,
   name VARCHAR NOT NULL,
@@ -21,5 +22,4 @@ CREATE TABLE reservations (
   resource_id INTEGER NOT NULL REFERENCES resources(id),
   customer_id INTEGER NOT NULL REFERENCES customers(id)
 );
-
 COMMIT;
