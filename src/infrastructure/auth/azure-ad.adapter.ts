@@ -1,4 +1,4 @@
-import { OAuthPort } from "./auth.port";
+import { OAuth } from "./auth.port";
 import jwksClient from "jwks-rsa";
 import jwt, { GetPublicKeyOrSecret, VerifyOptions } from "jsonwebtoken";
 export interface AzureAdConfig {
@@ -7,7 +7,7 @@ export interface AzureAdConfig {
   jwksUri: string;
 }
 
-export class AzureADAdapter implements OAuthPort {
+export class AzureADAdapter implements OAuth {
   constructor(private config: AzureAdConfig) {}
 
   verifyToken(token: string) {

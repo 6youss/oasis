@@ -1,4 +1,4 @@
-import { OAuthPort } from "./auth.port";
+import { OAuth } from "./auth.port";
 import jwksClient from "jwks-rsa";
 import jwt, { GetPublicKeyOrSecret, VerifyOptions } from "jsonwebtoken";
 
@@ -7,7 +7,7 @@ export interface Auth0Config {
   audience: string;
 }
 
-export class Auth0Adapter implements OAuthPort {
+export class Auth0Adapter implements OAuth {
   constructor(private config: Auth0Config) {}
 
   verifyToken(token: string) {

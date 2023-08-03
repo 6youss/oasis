@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { OAuthPort } from "../auth/auth.port";
+import { OAuth } from "../auth/auth.port";
 import { Logger } from "../logger/logger.adapter";
 import { UnauthorizedError } from "./http-errors";
 import { HttpContext, HttpServer, Route } from "./http.port";
@@ -7,7 +7,7 @@ import { HttpContext, HttpServer, Route } from "./http.port";
 export class ExpressServer implements HttpServer {
   app = express();
 
-  constructor(private logger: Logger, private oauth: OAuthPort) {}
+  constructor(private logger: Logger, private oauth: OAuth) {}
 
   start(port: number) {
     return new Promise<void>((resolve) => {

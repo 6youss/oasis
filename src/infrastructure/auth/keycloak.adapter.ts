@@ -1,4 +1,4 @@
-import { OAuthPort } from "./auth.port";
+import { OAuth } from "./auth.port";
 import jwksClient from "jwks-rsa";
 import jwt, { GetPublicKeyOrSecret, VerifyOptions } from "jsonwebtoken";
 export interface KeycloakConfig {
@@ -7,7 +7,7 @@ export interface KeycloakConfig {
   jwksUri: string;
 }
 
-export class KeycloakAdapter implements OAuthPort {
+export class KeycloakAdapter implements OAuth {
   constructor(private config: KeycloakConfig) {}
 
   verifyToken(token: string) {

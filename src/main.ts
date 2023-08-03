@@ -1,23 +1,27 @@
+import { OAuth } from "./infrastructure/auth/auth.port";
 import { KeycloakAdapter } from "./infrastructure/auth/keycloak.adapter";
 import { PostgresAdapter } from "./infrastructure/db/postgres.adapter";
 import { ExpressServer } from "./infrastructure/http/express.adapter";
+import { HttpServer } from "./infrastructure/http/http.port";
 import { ConsoleLogger } from "./infrastructure/logger/console.port";
+import { Logger } from "./infrastructure/logger/logger.adapter";
 import { MbCbAdapter } from "./infrastructure/message-broker/cb.adapter";
+import { MessageBroker } from "./infrastructure/message-broker/message-broker.port";
 import { wsApp } from "./infrastructure/ws";
 import { ReservationController } from "./reservation/reservation.controller";
 import { ReservationPostgresRepository } from "./reservation/reservation.repository";
 import { ReservationService } from "./reservation/reservation.service";
 
-const logger = new ConsoleLogger();
+const logger: Logger = new ConsoleLogger();
 
-const keycloakOauth = new KeycloakAdapter({
+const keycloakOauth: OAuth = new KeycloakAdapter({
   issuer: `http://localhost:8080/realms/Tricksept`,
   audience: `oasis-api`,
   jwksUri: `http://localhost:8080/realms/Tricksept/protocol/openid-connect/certs`,
 });
 
-const server = new ExpressServer(logger, keycloakOauth);
-const messageBroker = new MbCbAdapter();
+const server: HttpServer = new ExpressServer(logger, keycloakOauth);
+const messageBroker: MessageBroker = new MbCbAdapter();
 const postgresAdapter = new PostgresAdapter(logger);
 
 const reservationsRepository = new ReservationPostgresRepository(postgresAdapter);
