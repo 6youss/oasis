@@ -1,11 +1,15 @@
 import { ConflictError } from "../infrastructure/http/http-errors";
-import { Logger } from "../infrastructure/logger/logger.adapter";
+import { Logger } from "../infrastructure/logger/logger.port";
 import { MessageBroker } from "../infrastructure/message-broker/message-broker.port";
 import { OPEN_SOCKETS } from "../infrastructure/ws";
 import { ReservationRepository } from "./reservation.repository";
 
 export class ReservationService {
-  constructor(private reservationsRepo: ReservationRepository, private messageBroker: MessageBroker, private logger: Logger) {}
+  constructor(
+    private reservationsRepo: ReservationRepository,
+    private messageBroker: MessageBroker,
+    private logger: Logger
+  ) {}
 
   subscribeToNewReservations() {
     this.messageBroker.subscribe("create-reservation", (message) => {
@@ -27,7 +31,12 @@ export class ReservationService {
       throw new ConflictError(`The resource is not available for the requested time period.`);
     }
 
-    const createdReservation = await this.reservationsRepo.insertReservation(startTime, endTime, resourceId, customerId);
+    const createdReservation = await this.reservationsRepo.insertReservation(
+      startTime,
+      endTime,
+      resourceId,
+      customerId
+    );
 
     this.messageBroker.send("create-reservation", `new reservation created: id=${createdReservation.id}`);
 

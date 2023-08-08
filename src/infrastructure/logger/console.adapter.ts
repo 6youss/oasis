@@ -1,4 +1,4 @@
-import { Logger } from "./logger.adapter";
+import { Logger } from "./logger.port";
 
 export class ConsoleLogger implements Logger {
   constructor() {}

@@ -1,5 +1,5 @@
 import { Pool } from "pg";
-import { Logger } from "../logger/logger.adapter";
+import { Logger } from "../logger/logger.port";
 
 export class PostgresAdapter {
   private pool: Pool | undefined;

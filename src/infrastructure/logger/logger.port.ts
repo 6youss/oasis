@@ -4,3 +4,5 @@ export interface Logger {
   error(message: string, metadata?: any): void;
   debug(message: string, metadata?: any): void;
 }
+
+export class Logger {}

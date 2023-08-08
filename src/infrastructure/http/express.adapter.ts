@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { OAuth } from "../auth/auth.port";
-import { Logger } from "../logger/logger.adapter";
+import { Logger } from "../logger/logger.port";
 import { UnauthorizedError } from "./http-errors";
 import { HttpContext, HttpServer, Route } from "./http.port";
 

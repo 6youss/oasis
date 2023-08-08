@@ -3,13 +3,13 @@ import { KeycloakAdapter } from "./infrastructure/auth/keycloak.adapter";
 import { PostgresAdapter } from "./infrastructure/db/postgres.adapter";
 import { ExpressServer } from "./infrastructure/http/express.adapter";
 import { HttpServer } from "./infrastructure/http/http.port";
-import { ConsoleLogger } from "./infrastructure/logger/console.port";
-import { Logger } from "./infrastructure/logger/logger.adapter";
+import { ConsoleLogger } from "./infrastructure/logger/console.adapter";
+import { Logger } from "./infrastructure/logger/logger.port";
 import { MbCbAdapter } from "./infrastructure/message-broker/cb.adapter";
 import { MessageBroker } from "./infrastructure/message-broker/message-broker.port";
 import { wsApp } from "./infrastructure/ws";
 import { ReservationController } from "./reservation/reservation.controller";
-import { ReservationPostgresRepository } from "./reservation/reservation.repository";
+import { PostgresReservationRepository } from "./reservation/reservation.repository";
 import { ReservationService } from "./reservation/reservation.service";
 
 const logger: Logger = new ConsoleLogger();
@@ -24,7 +24,7 @@ const server: HttpServer = new ExpressServer(logger, keycloakOauth);
 const messageBroker: MessageBroker = new MbCbAdapter();
 const postgresAdapter = new PostgresAdapter(logger);
 
-const reservationsRepository = new ReservationPostgresRepository(postgresAdapter);
+const reservationsRepository = new PostgresReservationRepository(postgresAdapter);
 const reservationsService = new ReservationService(reservationsRepository, messageBroker, logger);
 reservationsService.subscribeToNewReservations();
 const reservationsController = new ReservationController(reservationsService);

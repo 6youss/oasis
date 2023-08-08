@@ -5,3 +5,5 @@ export interface MessageBroker {
 
   subscribe: (topic: string, callback: SubscriberCb) => void;
 }
+
+export class MessageBroker {}
